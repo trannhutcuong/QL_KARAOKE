@@ -1,0 +1,11 @@
+<Phong Ten="Phòng VIP 1" Ma_so="Phong_19" Gia_phong="1000000" DoanhThu="0" TrangThai="true">
+    <Nhom_Phong Ten="Phòng tiệc" Ma_so="PHONGTIEC"/>
+    <Danh_sach_thue_phong>
+        <Thue_phong Ngay="2017-3-6" Gia_phong="1000000" So_gio="2" Tien="2000000"/>
+        <Thue_phong Ngay="2018-3-1" Gia_phong="1000000" So_gio="3" Tien="3000000"/>
+        <Thue_phong Ngay="2017-6-7" Gia_phong="1000000" So_gio="2" Tien="2000000"/>
+        <Thue_phong Ngay="2017-1-5" Gia_phong="1000000" So_gio="4" Tien="4000000"/>
+        <Thue_phong Ngay="2018-3-5" Gia_phong="1000000" So_gio="2" Tien="2000000"/>
+        <Thue_phong Ngay="2018-3-5" Gia_phong="1000000" So_gio="3" Tien="3000000"/>
+    </Danh_sach_thue_phong>
+</Phong>
