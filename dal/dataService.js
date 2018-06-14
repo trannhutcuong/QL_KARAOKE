@@ -19,15 +19,16 @@ function checkAuth(headers){
 }
 
 app.createServer((req, res) => {
+    console.log(`${req.method} ${req.url}`);
     switch(req.method) {
         case 'GET':
             var getMethod = require('./services/getMethod.js');
 
             switch(req.url){
-                case '/DAL/CuaHang':
-                    console.log("Dang lay du lieu cua hang ...");
+                case '/DAL/DanhSachPhong':
+                    console.log("Dang lay du lieu phong ...");
                     res.writeHeader(200, {'Content-Type': 'text/xml'});
-                    var data = getMethod.get_DanhSach_Tivi();
+                    var data = getMethod.get_DanhSach_Phong();
                     res.end(data);
                     // if(checkAuth(req.headers) === true){
                     //     res.writeHeader(200, {'Content-Type': 'text/xml'})
@@ -93,7 +94,18 @@ app.createServer((req, res) => {
                     res.writeHeader(200, {'Content-Type': 'text/plain'})
                     res.end('101')
                     break
-
+                case '/DAL/QuanLyPhong/DatPhong':
+                {
+                    var ghiDatPhong = getMethod.ghi_Dat_Phong(req.headers.data);
+                    if(ghiDatPhong){
+                        res.writeHeader(200, {'Content-Type': 'text/plain'})
+                        res.end("Đặt phòng thành công");
+                    }
+                    else{
+                        res.end("Đặt phòng thất bại");
+                    }
+                }
+                    break;
                 default:
                     res.writeHeader(404, {'Content-Type': 'text/plain'})
                     res.end("Request was not support!!!")

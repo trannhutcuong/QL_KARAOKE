@@ -3,33 +3,47 @@
 var fs = require('fs')
 const xml2js = require('xml2js')
 
-var path = __dirname + '/../Method_03'
+var path = __dirname + "/../Data"
 
-var danhSach_Tivi = []
+var danhSach_Phong = []
 
-//Get danh sách cửa hàng
-var get_CuaHang = ()=>{
-    var data = fs.readFileSync( path + '/Cua_hang/Cua_hang.xml', 'utf-8')
-    return data
-}
-
-var get_DanhSach_Tivi = ()=>{
-    fs.readdirSync(path + '/Tivi/').forEach(file => {
-        var filePath = path + '/Tivi/' + file
+var get_DanhSach_Phong = ()=>{
+    fs.readdirSync(path).forEach(file => {
+        var filePath = path + "/" + file
         var data = fs.readFileSync(filePath, 'utf-8')
 
         var parser = new xml2js.Parser()
         parser.parseString(data, function (err, result) {
-            danhSach_Tivi.push({'Tivi' : result.Tivi.$})
+            danhSach_Phong.push({'Phong' : result.Phong.$})
         })
     })
-    var builder = new xml2js.Builder({rootName: "DS_Tivi"});
-    var xml = builder.buildObject(danhSach_Tivi)
+    //console.log(danhSach_Phong)
+    var builder = new xml2js.Builder({rootName: "DS_Phong"});
+    var xml = builder.buildObject(danhSach_Phong)
 
     return xml
 }
 
+function ghi_Dat_Phong(str){
+    //console.log(str);
+    var data = [];
+    for(var i = 0; i < 4; ++i){
+        var index = str.indexOf("&");
+        if(index != -1){
+            data.push(str.substring(0, index));
+            str = str.slice(index + 1, str.length);
+        }
+        else{
+            data.push(str);
+        }
+    }
+
+    var len = data.length;
+    
+    return true;
+}
+
 module.exports = {
-    get_CuaHang: get_CuaHang,
-    get_DanhSach_Tivi: get_DanhSach_Tivi
+    get_DanhSach_Phong: get_DanhSach_Phong,
+    ghi_Dat_Phong: ghi_Dat_Phong
 }

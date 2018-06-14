@@ -1,0 +1,41 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    font-weight: 400px;
+}
+
+table {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+#cot_btn{
+    text-align: center;
+}
+
+input{
+    height: 40px;
+}
+
+img{
+    width: 80px;
+    height: 70px;
+}
+
+h2{
+    background: #FE980F;
+    bottom: 0;
+    color:white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 0;
+    padding: 8px 20px;
+}
+
+#phieu_dat_phong{
+    margin: 30px;
+    border:1px solid #FE980F;
+}

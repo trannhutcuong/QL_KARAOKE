@@ -4,28 +4,52 @@ var query = require('querystring')
 
 var port = 3001
 
-var DuLieuTivi;
-
-// Gửi yêu cầu file cửa hàng tới DAL -----------------------------------
-console.log("Lay du lieu cua hang tu DAL ...")
-const options = {
-    host: 'localhost',
-    port: 3000,
-    path: "/DAL/CuaHang"
-  };
-const request = app.get(options);
-request.end();
-request.once('response', (resp) => {  
-    resp.on('data', function (data) {
-        DuLieuTivi = data;
-    });
-});
 
 app.createServer((req, res) => {
     console.log(`${req.method} ${req.url}`);
-
-    if(req.url == "/BUS/CuaHang"){
-        res.end(DuLieuTivi);
+    switch(req.method){
+        case 'GET':
+        {
+            if(req.url == "/BUS/DanhSachPhong"){
+                console.log("Lay du lieu cua hang tu DAL ...")
+                const options = {
+                    host: 'localhost',
+                    port: 3000,
+                    path: "/DAL/DanhSachPhong"
+                };
+                const request = app.get(options);
+                request.end();
+                request.once('response', (resp) => {  
+                    resp.on('data', function (data) {
+                        res.end(data);
+                    });
+                });
+            }
+        }
+        break;
+        case 'POST':
+        {
+            if(req.url == "/BUS/QuanLyPhong/DatPhong"){
+                //console.log(req.headers.data);
+                const options = {
+                    host: 'localhost',
+                    port: 3000,
+                    path: "/DAL/QuanLyPhong/DatPhong",
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        data: req.headers.data
+                     }
+                };
+                const request = app.get(options);
+                request.end();
+                request.once('response', (resp) => {
+                    resp.on('data', function (data) {
+                        res.end(data);
+                    });
+                });
+            }
+        }
     }
     
 }).listen(port, (err) => {
