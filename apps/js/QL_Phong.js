@@ -18,7 +18,7 @@ function LayDanhSachPhong(){
             var table = document.getElementById("table_phong");
             for(var i = 0; i < len; ++i){
                 var Phong = danh_sach[i];
-
+                
                 var row = table.insertRow(i + 1);
 
                 var cell1 = row.insertCell(0);
@@ -27,40 +27,43 @@ function LayDanhSachPhong(){
                 var cell4 = row.insertCell(3);
                 var cell5 = row.insertCell(4);
                 var cell6 = row.insertCell(5);
+                var cell7 = row.insertCell(6);
+
+                cell1.innerHTML = i + 1;
 
                 // Chèn Mã:
                 var dataMa = Phong.getElementsByTagName("Ma_so")[0];
                 var getNodesMa = dataMa.childNodes[0];
                 var Ma = getNodesMa.nodeValue;
-                cell1.innerHTML = Ma;
+                cell2.innerHTML = Ma;
 
                 // Chèn Tên
                 var dataTen = Phong.getElementsByTagName("Ten")[0];
                 var getNodesTen = dataTen.childNodes[0];
                 var Ten = getNodesTen.nodeValue;
-                cell2.innerHTML = Ten;
+                cell3.innerHTML = Ten;
 
                 // Chèn Giá:
                 var dataGia = Phong.getElementsByTagName("Gia_phong")[0];
                 var getNodesGia = dataGia.childNodes[0];
                 var Gia = getNodesGia.nodeValue;
-                cell3.innerHTML = Gia;
+                cell4.innerHTML = Gia;
                 
                 // Chèn Hình ảnh:
                 var Img = document.createElement("img");
                 Img.src = `${url}/${Ma}.jpg`;
                 Img.className = "image";
-                cell4.appendChild(Img);
+                cell5.appendChild(Img);
 
                 // Trạng thái:
                 var dataTT = Phong.getElementsByTagName("TrangThai")[0];
                 var getNodesTT = dataTT.childNodes[0];
                 var TrangThai = getNodesTT.nodeValue;
                 if(TrangThai == "true"){
-                    cell5.innerHTML = "Còn phòng";
+                    cell6.innerHTML = "Còn phòng";
                 }
                 else{
-                    cell5.innerHTML = "Hết phòng";
+                    cell6.innerHTML = "Hết phòng";
                 }
 
                 // Nút đặt phòng:
@@ -72,8 +75,8 @@ function LayDanhSachPhong(){
                 btn.name = Ten;
                 btn.onclick = function() {Dat_Phong(this.id, this.name)};
 
-                cell6.appendChild(btn);
-                cell6.id = "cot_btn";
+                cell7.appendChild(btn);
+                cell7.id = "cot_btn";
             }
         }
     };
@@ -87,6 +90,11 @@ function Dat_Phong(ID, Name){
     var title = document.createElement("h2");
     title.innerHTML = "ĐẶT PHÒNG KARAOKE";
     title.style = "text-align: center; margin: 20px;";
+
+    // Thông báo
+    var ThongBao = document.createElement("h3");
+    ThongBao.id = "thong_bao";
+    ThongBao.style = "color: red; text-align: center";
 
     var Phieu_Dat_Phong = document.createElement("div");
     Phieu_Dat_Phong.id = "phieu_dat_phong";
@@ -168,6 +176,7 @@ function Dat_Phong(ID, Name){
     Phieu_Dat_Phong.appendChild(div_nut_exit);
 
     Dat_Phong.appendChild(title);
+    Dat_Phong.appendChild(ThongBao);
     Dat_Phong.appendChild(Phieu_Dat_Phong);
     CONTENT.appendChild(Dat_Phong);
 }
@@ -179,6 +188,12 @@ function Tien_Hanh_Dat_Phong(ID){
     
     var data = `ID=${ID}&SoGio=${SoGio}&NguoiDat=${Ten}&SDT=${SDT}`;
     var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("thong_bao").innerHTML = this.responseText;
+        }
+    }
+
     xhttp.open("POST", "/QuanLyPhong/DatPhong", true);
     xhttp.setRequestHeader("Content-type", "text/plain; charset=UTF-8");
     xhttp.send(data);

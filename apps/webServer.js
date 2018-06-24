@@ -24,12 +24,36 @@ app.createServer((req, res) => {
                     }
                 })
             }
+            else if (req.url == "/QuanLyPhong/TraPhong"){
+                fs.readFile( __dirname + "/html/TraPhong.html", (err, data)=>{
+                    if(err) throw err
+                    else{
+                        res.setHeader('Content-type' , "text/html");
+                        res.end(data);
+                    }
+                })
+            }
             else if(req.url == "/BUS/DanhSachPhong"){
                 // Gửi yêu cầu file phòng tới BUS: localhost:3001
                 const options = {
                     host: 'localhost',
                     port: 3001,
                     path: "/BUS/DanhSachPhong"
+                  };
+                  const request = app.get(options);
+                  request.end();
+                  request.once('response', (resp) => {
+                    resp.on('data', function (data) {
+                        res.end(data);
+                    });
+                });
+            }
+            else if(req.url == "/BUS/DanhSachPhongDaDat"){
+                // Gửi yêu cầu file phòng đã đặt tới BUS: localhost:3001
+                const options = {
+                    host: 'localhost',
+                    port: 3001,
+                    path: "/BUS/DanhSachPhongDaDat"
                   };
                   const request = app.get(options);
                   request.end();
@@ -106,7 +130,6 @@ app.createServer((req, res) => {
                 });
             }
         }
-
     }
 }).listen(port, (err) => {
     if(err != null)
