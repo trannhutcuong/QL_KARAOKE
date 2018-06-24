@@ -40,6 +40,12 @@ app.createServer((req, res) => {
                     //     res.end("Request was not support!!!")
                     // }
                     break
+                case "/DAL/DanhSachPhongDaDat":
+                    console.log("Lay du lieu phong da dat .. ");
+                    res.writeHeader(200, {'Content-Type': 'text/xml'});
+                    var data = getMethod.get_DanhSach_Phong_Da_Dat();
+                    res.end(data);
+                    break;
 
                 case '/DanhSach_Tivi':
 
@@ -96,14 +102,34 @@ app.createServer((req, res) => {
                     break
                 case '/DAL/QuanLyPhong/DatPhong':
                 {
-                    var ghiDatPhong = getMethod.ghi_Dat_Phong(req.headers.data);
-                    if(ghiDatPhong){
+                    var ChuoiNhan = query.parse(req.headers.data);
+                    var Dat_Phong =  getMethod.Ghi_Dat_Phong(ChuoiNhan);
+                    if(Dat_Phong){
                         res.writeHeader(200, {'Content-Type': 'text/plain'})
-                        res.end("Đặt phòng thành công");
+                        res.end("Đặt phòng thành công!");
                     }
                     else{
-                        res.end("Đặt phòng thất bại");
+                        res.writeHeader(200, {'Content-Type': 'text/plain'})
+                        res.end("Đặt phòng thất bại!");
                     }
+                    
+                }
+                    break;
+                case '/DAL/TraPhong':
+                {
+                    var ChuoiNhan = query.parse(req.headers.data);
+                    res.writeHeader(200, {'Content-Type': 'text/xml'});
+                    var data = getMethod.get_Phong_Tra(ChuoiNhan.ID);
+                    res.end(data);
+                }
+                    break;
+                case '/DAL/XacNhanTraPhong':
+                {
+                    var ChuoiNhan = query.parse(req.headers.data);
+                    getMethod.Xac_Nhan_Tra_Phong(ChuoiNhan.ID);
+                    
+                    res.writeHeader(200, {'Content-Type': 'text/plain'})
+                    res.end("Trả phòng thành công!");
                 }
                     break;
                 default:

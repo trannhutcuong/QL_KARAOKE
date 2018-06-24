@@ -4,6 +4,11 @@ body {
     font-weight: 400px;
 }
 
+h1{
+    color: rgb(209, 83, 25);
+    text-align:  center;
+}
+
 .wrapper{
     max-width: 1200px;
     margin-left: auto;

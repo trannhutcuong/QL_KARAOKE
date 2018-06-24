@@ -105,10 +105,10 @@ function Dat_Phong(ID, Name){
 
     // Tên người đặt
     var TenNguoiDat = document.createElement("div");
-    TenNguoiDat.style = "margin: 30px; margin-left: 350px";
+    TenNguoiDat.style = "margin: 30px; margin-left: 300px";
     TenNguoiDat.className = "row";
     var Ten = document.createElement("h4");
-    Ten.className = "col-sm-2";
+    Ten.className = "col-sm-3";
     Ten.innerHTML = "Tên người đặt";
     var TenInput = document.createElement("input");
     TenInput.id = "TenNguoiDat";
@@ -120,10 +120,10 @@ function Dat_Phong(ID, Name){
 
     // Số điện thoại
     var SoDienThoai = document.createElement("div");
-    SoDienThoai.style.cssText = "margin: 30px; margin-left: 350px";
+    SoDienThoai.style.cssText = "margin: 30px; margin-left: 300px";
     SoDienThoai.className = "row";
     var SDT = document.createElement("h4");
-    SDT.className = "col-sm-2";
+    SDT.className = "col-sm-3";
     SDT.innerHTML = "Số điện thoại";
     var SDTInput = document.createElement("input");
     SDTInput.id = "SDTNguoiDat";
@@ -135,10 +135,10 @@ function Dat_Phong(ID, Name){
 
     // Số giờ
     var SoGio = document.createElement("div");
-    SoGio.style = "margin: 30px; margin-left: 350px";
+    SoGio.style = "margin: 30px; margin-left: 300px";
     SoGio.className = "row";
     var Gio = document.createElement("h4");
-    Gio.className = "col-sm-2";
+    Gio.className = "col-sm-3";
     Gio.innerHTML = "Số giờ";
     var GioInput = document.createElement("input");
     GioInput.id = "SoGio";
@@ -165,7 +165,7 @@ function Dat_Phong(ID, Name){
     var quay_ve = document.createElement("a");
     quay_ve.innerHTML = "Quay về";
     quay_ve.style = "color: green; font-style: font-style: italic;text-decoration: underline;; font-size: 20px;";
-    quay_ve.href = "/QuanLyPhong";
+    quay_ve.href = "/QuanLyPhongNhanVien";
     div_nut_exit.appendChild(quay_ve);
 
     Phieu_Dat_Phong.appendChild(TenPhong);

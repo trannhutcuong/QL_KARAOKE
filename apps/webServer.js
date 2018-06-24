@@ -15,8 +15,8 @@ app.createServer((req, res) => {
             if(req.url == "/" || req.url == "/home"){
                 req_url = "/html/index.html";
             }
-            else if(req.url == "/QuanLyPhong"){
-                fs.readFile( __dirname + "/html/QuanLyPhong.html", (err, data)=>{
+            else if(req.url == "/QuanLyPhongNhanVien"){
+                fs.readFile( __dirname + "/html/NhanVien/QuanLyPhong.html", (err, data)=>{
                     if(err) throw err
                     else{
                         res.setHeader('Content-type' , "text/html");
@@ -25,7 +25,7 @@ app.createServer((req, res) => {
                 })
             }
             else if (req.url == "/QuanLyPhong/TraPhong"){
-                fs.readFile( __dirname + "/html/TraPhong.html", (err, data)=>{
+                fs.readFile( __dirname + "/html/NhanVien/TraPhong.html", (err, data)=>{
                     if(err) throw err
                     else{
                         res.setHeader('Content-type' , "text/html");
@@ -114,6 +114,48 @@ app.createServer((req, res) => {
                         host: 'localhost',
                         port: 3001,
                         path: "/BUS/QuanLyPhong/DatPhong",
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            data: data.toString('utf-8')
+                         }
+                    };
+                    const request = app.get(options);
+                    request.end();
+                    request.once('response', (resp) => {
+                        resp.on('data', function (data) {
+                            res.end(data);
+                        });
+                    });
+                });
+            }
+            else if(req.url =="/QuanLyPhong/TraPhong"){
+                req.on('data', function(data){
+                    const options = {
+                        host: 'localhost',
+                        port: 3001,
+                        path: "/BUS/TraPhong",
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            data: data.toString('utf-8')
+                         }
+                    };
+                    const request = app.get(options);
+                    request.end();
+                    request.once('response', (resp) => {
+                        resp.on('data', function (data) {
+                            res.end(data);
+                        });
+                    });
+                });
+            }
+            else if(req.url =="/XacNhanTraPhong"){
+                req.on('data', function(data){
+                    const options = {
+                        host: 'localhost',
+                        port: 3001,
+                        path: "/BUS/XacNhanTraPhong",
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
