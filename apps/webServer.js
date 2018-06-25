@@ -13,7 +13,7 @@ app.createServer((req, res) => {
         case 'GET':
         {
             if(req.url == "/" || req.url == "/home"){
-                req_url = "/html/index.html";
+                req_url = "/html/KhachThamQuan/Home.html";
             }
             else if(req.url == "/QuanLyPhongNhanVien"){
                 fs.readFile( __dirname + "/html/NhanVien/QuanLyPhong.html", (err, data)=>{
@@ -32,6 +32,49 @@ app.createServer((req, res) => {
                         res.end(data);
                     }
                 })
+            }
+            else if(req.url.indexOf("ChonPhong") != -1){
+                var index = req.url.lastIndexOf("/");
+                var loai_phong = req.url.substring(index + 1, req.url.length);
+                //console.log(loai_phong);
+                // Gửi yêu cầu file phòng tới BUS: localhost:3001
+                const options = {
+                    host: 'localhost',
+                    port: 3001,
+                    path: "/BUS/ChonPhong",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        loai_phong: loai_phong
+                    }
+                };
+                const request = app.get(options);
+                request.end();
+                request.once('response', (resp) => {
+                    resp.on('data', function (data) {
+                        res.end(data);
+                    });
+                });
+            }
+            else if(req.url.indexOf("ChiTietPhong") != -1){
+                var index = req.url.lastIndexOf("/");
+                var ma_phong = req.url.substring(index + 1, req.url.length);
+                // Gửi yêu cầu file phòng tới BUS: localhost:3001
+                const options = {
+                    host: 'localhost',
+                    port: 3001,
+                    path: "/BUS/ChiTietPhong",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        ma_phong: ma_phong
+                    }
+                };
+                const request = app.get(options);
+                request.end();
+                request.once('response', (resp) => {
+                    resp.on('data', function (data) {
+                        res.end(data);
+                    });
+                });
             }
             else if(req.url == "/BUS/DanhSachPhong"){
                 // Gửi yêu cầu file phòng tới BUS: localhost:3001
@@ -139,7 +182,7 @@ app.createServer((req, res) => {
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                             data: data.toString('utf-8')
-                         }
+                        }
                     };
                     const request = app.get(options);
                     request.end();
