@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Quản lý Karaoke - Thêm tài khoản</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="../css/QL_Phong.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body class="wrapper">
+    <nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+        <a class="navbar-brand" href="#">Quản lý Karaoke</a>
+        </div>
+        <ul class="nav navbar-nav">
+        <li><a href="/QuanLyPhong">Xem, chỉnh sửa phòng</a></li>
+        <li><a href="/QuanLyPhong/XemDoanhThu">Xem doanh thu</a></li>
+        <li class="active"><a href="/QuanLyPhong/QuanLyTaiKhoan">Quản lý tài khoản</a></li>
+        <li><a href="/">Đăng xuất</a></li>
+        </ul>
+    </div>
+    </nav>
+    <div id="CONTENT">
+        <h2 style="text-align: center">THÊM TÀI KHOẢN</h2>
+
+        <h3 id="thong_bao" style = "color: red; text-align: center"></h3>
+    
+        <div class="container" id="phieu_dat_phong">
+                <div id="signupbox" style="margin-top:50px" class="mainbox col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Thêm tài khoản</div>
+                        </div>
+                        <div class="panel-body" >
+                            <form id="signupform" class="form-horizontal" role="form" method="POST" action="/signup">
+        
+                                <div class="form-group">
+                                    <label for="username" class="col-md-3 control-label">Tài khoản</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="username" placeholder="Tài khoản">
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="password" class="col-md-3 control-label">Mật khẩu</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" id="password" placeholder="Mật khẩu">
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="repassword" class="col-md-3 control-label">Nhập lại mật khẩu</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" id="repassword" placeholder="Nhập lại mật khẩu">
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="Loai_tai_khoan" class="col-md-3 control-label">Loại tài khoản</label>
+                                    <div class="col-md-3">
+                                        <select id="Loai_TK" class="form-control">
+                                            <option selected>Nhân viên</option>
+                                            <option>Quản lý</option>
+                                        </select>
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">
+                                    <!-- Button -->
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <input onclick="ThemTaiKhoan()" type="button" class="btn btn-info" value="Thêm" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <a href="/QuanLyPhong/QuanLyTaiKhoan">Quay về</a>
+                                    </div>
+                                </div>
+
+                            </form>
+                         </div>
+                    </div>
+        
+                 </div>
+            </div>
+        
+    </div>
+    <script src="../js/ThemTaiKhoan.js"></script>
+</body>
+</html>

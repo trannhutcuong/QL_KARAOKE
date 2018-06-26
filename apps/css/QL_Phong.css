@@ -34,17 +34,33 @@ img{
 }
 
 h2{
-    background: #FE980F;
+    background: rgb(132, 205, 235);
     bottom: 0;
-    color:white;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: bold;
     margin-bottom: 0;
     padding: 8px 20px;
 }
 
 #phieu_dat_phong{
-    margin: 30px;
-    border:1px solid #FE980F;
+    border:1px solid rgb(132, 205, 235);
+}
+
+#table_TK{
+    width: 60%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#tb_thong_tin1{
+    width: 80%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#cell_min{
+    width: 33%;
 }

@@ -15,8 +15,8 @@ app.createServer((req, res) => {
             if(req.url == "/" || req.url == "/home"){
                 req_url = "/html/KhachThamQuan/Home.html";
             }
-            else if(req.url == "/QuanLyPhongNhanVien"){
-                fs.readFile( __dirname + "/html/NhanVien/QuanLyPhong.html", (err, data)=>{
+            else if(req.url == "/QuanLyPhong"){
+                fs.readFile( __dirname + "/html/QuanLy/QuanLyPhong.html", (err, data)=>{
                     if(err) throw err
                     else{
                         res.setHeader('Content-type' , "text/html");
@@ -24,7 +24,57 @@ app.createServer((req, res) => {
                     }
                 })
             }
-            else if (req.url == "/QuanLyPhong/TraPhong"){
+            else if(req.url == "/signup"){
+                fs.readFile( __dirname + "/html/QuanLy/ThemTaiKhoan.html", (err, data)=>{
+                    if(err) throw err
+                    else{
+                        res.setHeader('Content-type' , "text/html");
+                        res.end(data);
+                    }
+                })
+            }
+            else if(req.url == "/QuanLyPhong/XemDoanhThu"){
+                fs.readFile( __dirname + "/html/QuanLy/XemDoanhThu.html", (err, data)=>{
+                    if(err) throw err
+                    else{
+                        res.setHeader('Content-type' , "text/html");
+                        res.end(data);
+                    }
+                })
+            }
+            else if(req.url == "/QuanLyPhong/QuanLyTaiKhoan"){
+                fs.readFile( __dirname + "/html/QuanLy/XemTaiKhoan.html", (err, data)=>{
+                    if(err) throw err
+                    else{
+                        res.setHeader('Content-type' , "text/html");
+                        res.end(data);
+                    }
+                })
+            }
+            else if(req.url == "/BUS/DanhSachTaiKhoan"){
+                const options = {
+                    host: 'localhost',
+                    port: 3001,
+                    path: "/BUS/DanhSachTaiKhoan"
+                  };
+                  const request = app.get(options);
+                  request.end();
+                  request.once('response', (resp) => {
+                    resp.on('data', function (data) {
+                        res.end(data);
+                    });
+                });
+            }
+            else if(req.url == "/QuanLyPhongNhanVien"){
+                fs.readFile( __dirname + "/html/NhanVien/QuanLyPhong_NV.html", (err, data)=>{
+                    if(err) throw err
+                    else{
+                        res.setHeader('Content-type' , "text/html");
+                        res.end(data);
+                    }
+                })
+            }
+            else if (req.url == "/QuanLyPhongNhanVien/TraPhong"){
                 fs.readFile( __dirname + "/html/NhanVien/TraPhong.html", (err, data)=>{
                     if(err) throw err
                     else{
@@ -199,6 +249,48 @@ app.createServer((req, res) => {
                         host: 'localhost',
                         port: 3001,
                         path: "/BUS/XacNhanTraPhong",
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            data: data.toString('utf-8')
+                         }
+                    };
+                    const request = app.get(options);
+                    request.end();
+                    request.once('response', (resp) => {
+                        resp.on('data', function (data) {
+                            res.end(data);
+                        });
+                    });
+                });
+            }
+            else if(req.url == "/QuanLyPhong/ThayDoiThongTin"){
+                req.on('data', function(data){
+                    const options = {
+                        host: 'localhost',
+                        port: 3001,
+                        path: "/BUS/ThayDoiThongTin",
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            data: data.toString('utf-8')
+                         }
+                    };
+                    const request = app.get(options);
+                    request.end();
+                    request.once('response', (resp) => {
+                        resp.on('data', function (data) {
+                            res.end(data);
+                        });
+                    });
+                });
+            }
+            else if(req.url == "/QuanLyPhong/ThemTaiKhoan"){
+                req.on('data', function(data){
+                    const options = {
+                        host: 'localhost',
+                        port: 3001,
+                        path: "/BUS/ThemTaiKhoan",
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
