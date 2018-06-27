@@ -12,71 +12,79 @@ function LayDanhSachPhong(){
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var data = this.responseText;
+            console.log(data);
             var Du_lieu = new DOMParser().parseFromString(data, "text/xml").documentElement;
             danh_sach = Du_lieu.getElementsByTagName("Phong");
             var len = danh_sach.length;
             var table = document.getElementById("table_phong");
+            var k = 0;
             for(var i = 0; i < len; ++i){
                 var Phong = danh_sach[i];
-                
-                var row = table.insertRow(i + 1);
 
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                var cell4 = row.insertCell(3);
-                var cell5 = row.insertCell(4);
-                var cell6 = row.insertCell(5);
-                var cell7 = row.insertCell(6);
+                // Lấy tình trạng hoạt động của phòng:
+                var dataHD= Phong.getElementsByTagName("HoatDong")[0];
+                var getNodesHD= dataHD.childNodes[0];
+                var HD = getNodesHD.nodeValue;
+                if(HD != "false"){
+                    var row = table.insertRow(k + 1);
 
-                cell1.innerHTML = i + 1;
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    var cell6 = row.insertCell(5);
+                    var cell7 = row.insertCell(6);
 
-                // Chèn Mã:
-                var dataMa = Phong.getElementsByTagName("Ma_so")[0];
-                var getNodesMa = dataMa.childNodes[0];
-                var Ma = getNodesMa.nodeValue;
-                cell2.innerHTML = Ma;
+                    cell1.innerHTML = k + 1;
 
-                // Chèn Tên
-                var dataTen = Phong.getElementsByTagName("Ten")[0];
-                var getNodesTen = dataTen.childNodes[0];
-                var Ten = getNodesTen.nodeValue;
-                cell3.innerHTML = Ten;
+                    // Chèn Mã:
+                    var dataMa = Phong.getElementsByTagName("Ma_so")[0];
+                    var getNodesMa = dataMa.childNodes[0];
+                    var Ma = getNodesMa.nodeValue;
+                    cell2.innerHTML = Ma;
 
-                // Chèn Giá:
-                var dataGia = Phong.getElementsByTagName("Gia_phong")[0];
-                var getNodesGia = dataGia.childNodes[0];
-                var Gia = getNodesGia.nodeValue;
-                cell4.innerHTML = Gia;
-                
-                // Chèn Hình ảnh:
-                var Img = document.createElement("img");
-                Img.src = `${url}/${Ma}.jpg`;
-                Img.className = "image";
-                cell5.appendChild(Img);
+                    // Chèn Tên
+                    var dataTen = Phong.getElementsByTagName("Ten")[0];
+                    var getNodesTen = dataTen.childNodes[0];
+                    var Ten = getNodesTen.nodeValue;
+                    cell3.innerHTML = Ten;
 
-                // Trạng thái:
-                var dataTT = Phong.getElementsByTagName("TrangThai")[0];
-                var getNodesTT = dataTT.childNodes[0];
-                var TrangThai = getNodesTT.nodeValue;
-                if(TrangThai == "true"){
-                    cell6.innerHTML = "Còn phòng";
+                    // Chèn Giá:
+                    var dataGia = Phong.getElementsByTagName("Gia_phong")[0];
+                    var getNodesGia = dataGia.childNodes[0];
+                    var Gia = getNodesGia.nodeValue;
+                    cell4.innerHTML = Gia;
+                    
+                    // Chèn Hình ảnh:
+                    var Img = document.createElement("img");
+                    Img.src = `${url}/${Ma}.jpg`;
+                    Img.className = "image";
+                    cell5.appendChild(Img);
+
+                    // Trạng thái:
+                    var dataTT = Phong.getElementsByTagName("TrangThai")[0];
+                    var getNodesTT = dataTT.childNodes[0];
+                    var TrangThai = getNodesTT.nodeValue;
+                    if(TrangThai == "true"){
+                        // Nút đặt phòng:
+                        var btn = document.createElement('input');
+                        btn.type = "button";
+                        btn.className = "btn btn-success";
+                        btn.value = "Đặt phòng";
+                        btn.id = Ma;
+                        btn.name = Ten;
+                        btn.onclick = function() {Dat_Phong(this.id, this.name)};
+
+                        cell7.appendChild(btn);
+                        cell7.id = "cot_btn";
+                        cell6.innerHTML = "Còn phòng";
+                    }
+                    else{
+                        cell6.innerHTML = "Hết phòng";
+                    }
+                    k++;
                 }
-                else{
-                    cell6.innerHTML = "Hết phòng";
-                }
-
-                // Nút đặt phòng:
-                var btn = document.createElement('input');
-                btn.type = "button";
-                btn.className = "btn btn-success";
-                btn.value = "Đặt phòng";
-                btn.id = Ma;
-                btn.name = Ten;
-                btn.onclick = function() {Dat_Phong(this.id, this.name)};
-
-                cell7.appendChild(btn);
-                cell7.id = "cot_btn";
             }
         }
     };
@@ -182,21 +190,26 @@ function Dat_Phong(ID, Name){
 }
 
 function Tien_Hanh_Dat_Phong(ID){
-    var Ten = document.getElementById("TenNguoiDat").value;
+    var Ten = encodeURIComponent(document.getElementById("TenNguoiDat").value);
     var SDT = document.getElementById("SDTNguoiDat").value;
     var SoGio = document.getElementById("SoGio").value;
     
-    var data = `ID=${ID}&SoGio=${SoGio}&NguoiDat=${Ten}&SDT=${SDT}`;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("thong_bao").innerHTML = this.responseText;
-        }
+    if(Ten == "" || SDT == "" || SoGio == "" || KiemTraSo(SoGio) == false || KiemTraSo(SDT) == false){
+        document.getElementById("thong_bao").innerHTML = "Sai thông tin";
     }
+    else{
+        var data = `ID=${ID}&SoGio=${SoGio}&NguoiDat=${Ten}&SDT=${SDT}`;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("thong_bao").innerHTML = this.responseText;
+            }
+        }
 
-    xhttp.open("POST", "/QuanLyPhong/DatPhong", true);
-    xhttp.setRequestHeader("Content-type", "text/plain; charset=UTF-8");
-    xhttp.send(data);
+        xhttp.open("POST", "/QuanLyPhong/DatPhong", true);
+        xhttp.setRequestHeader("Content-type", "text/plain; charset=UTF-8");
+        xhttp.send(data);
+    }
 }
 
 function Xoa_Tat_ca_childNodes_Element(node_element){
@@ -204,4 +217,13 @@ function Xoa_Tat_ca_childNodes_Element(node_element){
     for(var i = node_list.length - 1; i >= 0; i--){
         node_element.removeChild(node_list[i])
     }
+}
+
+function KiemTraSo(num){
+    var len = num.length;
+    for(var i = 0; i < len; ++i){
+        if(num[i] == "+" || num[i] == "-" || num[i] == "." || num[i] == ",")
+        return false;
+    }
+    return true;
 }

@@ -111,50 +111,71 @@ function Tra_Phong(ID, Name){
             var Tra_Phong = document.createElement("div");
             var title = document.createElement("h2");
             title.innerHTML = "TRẢ VÀ TÍNH TIỀN PHÒNG " + Name;
-            title.style = "text-align: center; margin: 20px;";
+            title.style = "text-align: center;";
 
             // Thông báo
             var ThongBao = document.createElement("h3");
             ThongBao.id = "thong_bao";
             ThongBao.style = "color: red; text-align: center";
 
-            var Phieu_dat_phong = document.createElement("div");
-            Phieu_dat_phong.id = "phieu_dat_phong";
+            var Phieu_tra_phong = document.createElement("div");
+            Phieu_tra_phong.id = "phieu_dat_phong";
 
-            // div 1 ----------------------------------------------------------------------
-            var div1 = document.createElement("div");
-            div1.className = "row";
-                // Người đặt
-            var NguoiDat = document.createElement("p");
-            NguoiDat.className = "col-sm-5";
-            NguoiDat.style="padding: 10px; margin-left: 200px; font-size: 20px"
-            NguoiDat.innerHTML = "Người đặt:  " + nguoi_dat;
-                // Ngày đặt:
-            var NgayDat = document.createElement("p");
-            NgayDat.className = "col-sm-5";
-            NgayDat.style = "padding: 10px; margin-left: 200px; font-size: 20px";
-            NgayDat.innerHTML = "Thời gian đặt:  " + thoi_gian;
-            div1.appendChild(NguoiDat);
-            div1.appendChild(NgayDat);
-            div1.style = "margin-top: 50px;border:1px solid #FE980F;";
+            // Table hiện thông tin
+            var table1 = document.createElement("TABLE");
+            table1.className = "table table-striped table-bordered table-hover";
+            table1.id = "tb_thong_tin1";
+            var tb1_th1 = document.createElement("TH");
+            var tb1_th2 = document.createElement("TH");
+            var tb1_th3 = document.createElement("TH");
+            var tb1_th4 = document.createElement("TH");
 
-            // div 2 ----------------------------------------------------------------------
-            var div2 = document.createElement("div");
-            div2.className = "row";
-                // SDT
-            var SoDienThoai = document.createElement("p");
-            SoDienThoai.className = "col-sm-5";
-            SoDienThoai.style="padding: 10px; margin-left: 200px; font-size: 20px"
-            SoDienThoai.innerHTML = "Số điện thoại:  " + sdt;
-                // Số giờ:
-            var SoGio = document.createElement("p");
-            SoGio.className = "col-sm-5";
-            SoGio.style = "padding: 10px; margin-left: 200px; font-size: 20px";
-            SoGio.innerHTML = "Số giờ:  " + so_gio;
-            div2.appendChild(SoDienThoai);
-            div2.appendChild(SoGio);
-            div2.style = "margin-top: 20px;border:1px solid #FE980F;";
+            var temp = document.createTextNode("Người đặt");
+            tb1_th1.appendChild(temp);
+            temp = document.createTextNode("Thời gian đặt");
+            tb1_th2.appendChild(temp);
+            temp = document.createTextNode("Số điện thoại");
+            tb1_th3.appendChild(temp);
+            temp = document.createTextNode("Số giờ");
+            tb1_th4.appendChild(temp);
 
+            table1.appendChild(tb1_th1);
+            table1.appendChild(tb1_th2);
+            table1.appendChild(tb1_th3);
+            table1.appendChild(tb1_th4);
+
+            var row = table1.insertRow(0);
+            var tb1_cell1 = row.insertCell(0);
+            var tb1_cell2 = row.insertCell(1);
+            var tb1_cell3 = row.insertCell(2);
+            var tb1_cell4 = row.insertCell(3);
+
+            var inputTen = document.createElement("input");
+            inputTen.type = "text";
+            inputTen.value = nguoi_dat;
+            inputTen.disabled = true;
+            tb1_cell1.appendChild(inputTen);
+
+            var inputTG = document.createElement("input");
+            inputTG.type = "text";
+            inputTG.value = thoi_gian;
+            inputTG.disabled = true;
+            tb1_cell2.appendChild(inputTG);
+
+            var inputSDT = document.createElement("input");
+            inputSDT.type = "text";
+            inputSDT.value = sdt;
+            inputSDT.disabled = true;
+            tb1_cell3.appendChild(inputSDT);
+
+            var inputGio = document.createElement("input");
+            inputGio.type = "text";
+            inputGio.value = so_gio;
+            inputGio.disabled = true;
+            tb1_cell4.appendChild(inputGio);
+
+            Phieu_tra_phong.appendChild(table1);
+    
             // div 3 ----------------------------------------------------------------------
             var div3 = document.createElement("div");
             div3.style = "margin-top: 50px; text-align: center";
@@ -175,20 +196,19 @@ function Tra_Phong(ID, Name){
 
             // div5 ----------------------------------------------------------------------
             var div5 = document.createElement("div");
-            div5.style = "margin-top: 20px; text-align: center";
+            div5.style = "margin-top: 20px; text-align: center; margin-bottom: 30px";
             var QuayVe = document.createElement("a");
             QuayVe.innerHTML = "Quay về";
             QuayVe.style = "font-size: 20px; color: green";
-            QuayVe.href = "/QuanLyPhong/TraPhong";
+            QuayVe.href = "/QuanLyPhongNhanVien/TraPhong";
             div5.appendChild(QuayVe);
 
+            Phieu_tra_phong.appendChild(div3);
+            Phieu_tra_phong.appendChild(div4);
+            Phieu_tra_phong.appendChild(div5);
             Tra_Phong.appendChild(title);
             Tra_Phong.appendChild(ThongBao);
-            Tra_Phong.appendChild(div1);
-            Tra_Phong.appendChild(div2);
-            Tra_Phong.appendChild(div3);
-            Tra_Phong.appendChild(div4);
-            Tra_Phong.appendChild(div5);
+            Tra_Phong.appendChild(Phieu_tra_phong);
 
             CONTENT.appendChild(Tra_Phong);
         }

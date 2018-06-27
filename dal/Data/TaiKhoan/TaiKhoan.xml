@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Danh_sach_tai_khoan>
+  <Tai_khoan username="quanly1" password="123" loai="2"/>
+  <Tai_khoan username="nhanvien1" password="123" loai="1"/>
+  <Tai_khoan username="ncuong" password="132" loai="2"/>
+  <Tai_khoan username="ntc" password="123" loai="2"/>
+  <Tai_khoan username="admin" password="132" loai="1"/>
+  <Tai_khoan username="staff" password="456" loai="2"/>
+  <Tai_khoan username="ntccc" password="123" loai="2"/>
+</Danh_sach_tai_khoan>

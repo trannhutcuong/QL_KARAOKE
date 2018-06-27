@@ -45,32 +45,38 @@ $("#chon_phong").on("click","button", function () {
         TH_ThongTin.className = "col-lg-3 col-md-6 visit mb-3";
         TH_ThongTin.style = "background: white;margin-top: 15px";
 
-        var link = document.createElement("a");
+        // Lấy tình trạng hoạt động của phòng:
+        var dataHD= Phong.getElementsByTagName("HoatDong")[0];
+        var getNodesHD= dataHD.childNodes[0];
+        var HD = getNodesHD.nodeValue;
+        if(HD != "false"){
+            var link = document.createElement("a");
 
-        // Lấy hình ảnh
-        var dataMa = Phong.getElementsByTagName("Ma_so")[0];
-        var getNodesMa = dataMa.childNodes[0];
-        var Ma = getNodesMa.nodeValue;
+            // Lấy hình ảnh
+            var dataMa = Phong.getElementsByTagName("Ma_so")[0];
+            var getNodesMa = dataMa.childNodes[0];
+            var Ma = getNodesMa.nodeValue;
 
-        var Hinh = document.createElement("img");
-        Hinh.src = `${url}/${Ma}.jpg`;
-        Hinh.className = "img-fluid";
-        Hinh.style = "padding: 5px";
+            var Hinh = document.createElement("img");
+            Hinh.src = `${url}/${Ma}.jpg`;
+            Hinh.className = "img-fluid";
+            Hinh.style = "padding: 5px";
 
-        //ink.href = "#";
-        link.id = Ma;
-        link.appendChild(Hinh);
+            //ink.href = "#";
+            link.id = Ma;
+            link.appendChild(Hinh);
 
-        // Lấy tên phòng:
-        var dataTen = Phong.getElementsByTagName("Ten")[0];
-        var getNodesTen = dataTen.childNodes[0];
-        var Ten = getNodesTen.nodeValue;
-        var TenPhong = document.createElement("h3");
-        TenPhong.innerHTML = Ten;
+            // Lấy tên phòng:
+            var dataTen = Phong.getElementsByTagName("Ten")[0];
+            var getNodesTen = dataTen.childNodes[0];
+            var Ten = getNodesTen.nodeValue;
+            var TenPhong = document.createElement("h3");
+            TenPhong.innerHTML = Ten;
 
-        TH_ThongTin.appendChild(link);
-        TH_ThongTin.appendChild(TenPhong);
-        CONTENT.appendChild(TH_ThongTin);
+            TH_ThongTin.appendChild(link);
+            TH_ThongTin.appendChild(TenPhong);
+            CONTENT.appendChild(TH_ThongTin);
+        }
     }
 }
 

@@ -3,6 +3,9 @@ var fs = require('fs');
 var url = require('url')
 var parseString = require("xml2js").parseString;
 
+var UID = require("./Services/uid.json");
+var getMethodWeb = require("./Services/getMethodWeb.js");
+
 var port = 3002;
 
 app.createServer((req, res) => {
@@ -15,8 +18,16 @@ app.createServer((req, res) => {
             if(req.url == "/" || req.url == "/home"){
                 req_url = "/html/KhachThamQuan/Home.html";
             }
-            else if(req.url == "/QuanLyPhong"){
-                fs.readFile( __dirname + "/html/QuanLy/QuanLyPhong.html", (err, data)=>{
+
+            else if(req.url == "/get_login"){
+                UID.id = 0;
+                var jsonFile = JSON.stringify(UID)
+                fs.writeFile(__dirname +  "/Services/uid.json", jsonFile, function(err){
+                    if(err){
+                        throw err;
+                    }
+                })
+                fs.readFile( __dirname + "/html/login.html", (err, data)=>{
                     if(err) throw err
                     else{
                         res.setHeader('Content-type' , "text/html");
@@ -24,137 +35,37 @@ app.createServer((req, res) => {
                     }
                 })
             }
-            else if(req.url == "/signup"){
-                fs.readFile( __dirname + "/html/QuanLy/ThemTaiKhoan.html", (err, data)=>{
-                    if(err) throw err
-                    else{
-                        res.setHeader('Content-type' , "text/html");
-                        res.end(data);
-                    }
-                })
+            else if(req.url == "/QuanLyPhong" || req.url == "/signup" || req.url == "/QuanLyPhong/XemDoanhThu"
+            || req.url == "/QuanLyPhong/QuanLyTaiKhoan" || req.url == "/BUS/DanhSachTaiKhoan"){
+
+                var uid = UID.id;
+                getMethodWeb.GetPageQuanLy(uid, req.url, res);
             }
-            else if(req.url == "/QuanLyPhong/XemDoanhThu"){
-                fs.readFile( __dirname + "/html/QuanLy/XemDoanhThu.html", (err, data)=>{
-                    if(err) throw err
-                    else{
-                        res.setHeader('Content-type' , "text/html");
-                        res.end(data);
-                    }
-                })
-            }
-            else if(req.url == "/QuanLyPhong/QuanLyTaiKhoan"){
-                fs.readFile( __dirname + "/html/QuanLy/XemTaiKhoan.html", (err, data)=>{
-                    if(err) throw err
-                    else{
-                        res.setHeader('Content-type' , "text/html");
-                        res.end(data);
-                    }
-                })
-            }
-            else if(req.url == "/BUS/DanhSachTaiKhoan"){
-                const options = {
-                    host: 'localhost',
-                    port: 3001,
-                    path: "/BUS/DanhSachTaiKhoan"
-                  };
-                  const request = app.get(options);
-                  request.end();
-                  request.once('response', (resp) => {
-                    resp.on('data', function (data) {
-                        res.end(data);
-                    });
-                });
-            }
-            else if(req.url == "/QuanLyPhongNhanVien"){
-                fs.readFile( __dirname + "/html/NhanVien/QuanLyPhong_NV.html", (err, data)=>{
-                    if(err) throw err
-                    else{
-                        res.setHeader('Content-type' , "text/html");
-                        res.end(data);
-                    }
-                })
-            }
-            else if (req.url == "/QuanLyPhongNhanVien/TraPhong"){
-                fs.readFile( __dirname + "/html/NhanVien/TraPhong.html", (err, data)=>{
-                    if(err) throw err
-                    else{
-                        res.setHeader('Content-type' , "text/html");
-                        res.end(data);
-                    }
-                })
+            else if(req.url == "/QuanLyPhongNhanVien" || req.url == "/QuanLyPhongNhanVien/TraPhong" 
+            || req.url == "/BUS/DanhSachPhongDaDat"){
+                var uid = UID.id;
+                getMethodWeb.GetPageNhanVien(uid, req.url, res);
             }
             else if(req.url.indexOf("ChonPhong") != -1){
                 var index = req.url.lastIndexOf("/");
                 var loai_phong = req.url.substring(index + 1, req.url.length);
-                //console.log(loai_phong);
-                // Gửi yêu cầu file phòng tới BUS: localhost:3001
-                const options = {
-                    host: 'localhost',
-                    port: 3001,
-                    path: "/BUS/ChonPhong",
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        loai_phong: loai_phong
-                    }
-                };
-                const request = app.get(options);
-                request.end();
-                request.once('response', (resp) => {
-                    resp.on('data', function (data) {
-                        res.end(data);
-                    });
-                });
+                var headers = {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    loai_phong: loai_phong
+                }
+                getMethodWeb.GuiDuLieuGet("/BUS/ChonPhong", headers, res);
             }
             else if(req.url.indexOf("ChiTietPhong") != -1){
                 var index = req.url.lastIndexOf("/");
                 var ma_phong = req.url.substring(index + 1, req.url.length);
-                // Gửi yêu cầu file phòng tới BUS: localhost:3001
-                const options = {
-                    host: 'localhost',
-                    port: 3001,
-                    path: "/BUS/ChiTietPhong",
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        ma_phong: ma_phong
-                    }
-                };
-                const request = app.get(options);
-                request.end();
-                request.once('response', (resp) => {
-                    resp.on('data', function (data) {
-                        res.end(data);
-                    });
-                });
+                var headers = {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    ma_phong: ma_phong
+                }
+                getMethodWeb.GuiDuLieuGet("/BUS/ChiTietPhong", headers, res);
             }
             else if(req.url == "/BUS/DanhSachPhong"){
-                // Gửi yêu cầu file phòng tới BUS: localhost:3001
-                const options = {
-                    host: 'localhost',
-                    port: 3001,
-                    path: "/BUS/DanhSachPhong"
-                  };
-                  const request = app.get(options);
-                  request.end();
-                  request.once('response', (resp) => {
-                    resp.on('data', function (data) {
-                        res.end(data);
-                    });
-                });
-            }
-            else if(req.url == "/BUS/DanhSachPhongDaDat"){
-                // Gửi yêu cầu file phòng đã đặt tới BUS: localhost:3001
-                const options = {
-                    host: 'localhost',
-                    port: 3001,
-                    path: "/BUS/DanhSachPhongDaDat"
-                  };
-                  const request = app.get(options);
-                  request.end();
-                  request.once('response', (resp) => {
-                    resp.on('data', function (data) {
-                        res.end(data);
-                    });
-                });
+                getMethodWeb.GuiDuLieuGet("/BUS/DanhSachPhong", 0, res);
             }
             else{
                 req_url = req.url;
@@ -201,110 +112,72 @@ app.createServer((req, res) => {
         }
         case 'POST':
         {
-            if(req.url == "/QuanLyPhong/DatPhong"){
-                req.on('data', function(data){
-                    const options = {
-                        host: 'localhost',
-                        port: 3001,
-                        path: "/BUS/QuanLyPhong/DatPhong",
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            data: data.toString('utf-8')
-                         }
-                    };
-                    const request = app.get(options);
-                    request.end();
-                    request.once('response', (resp) => {
-                        resp.on('data', function (data) {
-                            res.end(data);
+            switch(req.url){
+                case "/post_login":
+                    req.on('data', function(data){
+                        const options = {
+                            host: 'localhost',
+                            port: 3001,
+                            path: "/BUS/post_login",
+                            method: 'POST',
+                            headers : {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                data: data.toString('utf-8')
+                            }
+                        };
+                        const request = app.get(options);
+                        request.end();
+                        request.once('response', (resp) => {
+                            resp.on('data', function (data) {
+                                if(data.toString() != "fail"){
+                                    UID.id = data.toString();
+                                    var jsonFile = JSON.stringify(UID)
+                                    fs.writeFile(__dirname +  "/Services/uid.json", jsonFile, function(err){
+                                        if(err){
+                                            throw err;
+                                        }
+                                    })
+                                }
+                                res.end(data);
+                            });
                         });
                     });
-                });
-            }
-            else if(req.url =="/QuanLyPhong/TraPhong"){
-                req.on('data', function(data){
-                    const options = {
-                        host: 'localhost',
-                        port: 3001,
-                        path: "/BUS/TraPhong",
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            data: data.toString('utf-8')
-                        }
-                    };
-                    const request = app.get(options);
-                    request.end();
-                    request.once('response', (resp) => {
-                        resp.on('data', function (data) {
-                            res.end(data);
-                        });
-                    });
-                });
-            }
-            else if(req.url =="/XacNhanTraPhong"){
-                req.on('data', function(data){
-                    const options = {
-                        host: 'localhost',
-                        port: 3001,
-                        path: "/BUS/XacNhanTraPhong",
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            data: data.toString('utf-8')
-                         }
-                    };
-                    const request = app.get(options);
-                    request.end();
-                    request.once('response', (resp) => {
-                        resp.on('data', function (data) {
-                            res.end(data);
-                        });
-                    });
-                });
-            }
-            else if(req.url == "/QuanLyPhong/ThayDoiThongTin"){
-                req.on('data', function(data){
-                    const options = {
-                        host: 'localhost',
-                        port: 3001,
-                        path: "/BUS/ThayDoiThongTin",
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            data: data.toString('utf-8')
-                         }
-                    };
-                    const request = app.get(options);
-                    request.end();
-                    request.once('response', (resp) => {
-                        resp.on('data', function (data) {
-                            res.end(data);
-                        });
-                    });
-                });
-            }
-            else if(req.url == "/QuanLyPhong/ThemTaiKhoan"){
-                req.on('data', function(data){
-                    const options = {
-                        host: 'localhost',
-                        port: 3001,
-                        path: "/BUS/ThemTaiKhoan",
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            data: data.toString('utf-8')
-                         }
-                    };
-                    const request = app.get(options);
-                    request.end();
-                    request.once('response', (resp) => {
-                        resp.on('data', function (data) {
-                            res.end(data);
-                        });
-                    });
-                });
+                    break;
+                
+                case "/QuanLyPhong/DatPhong":
+                    req.on('data', function(data){
+                        getMethodWeb.GuiDuLieuPost("/BUS/QuanLyPhong/DatPhong", data, res);
+                    })
+                    break;
+                
+                case "/QuanLyPhong/TraPhong":
+                    req.on('data', function(data){
+                        getMethodWeb.GuiDuLieuPost("/BUS/TraPhong", data, res);
+                    })
+                    break;
+                
+                case "/XacNhanTraPhong":
+                    req.on('data', function(data){
+                        getMethodWeb.GuiDuLieuPost("/BUS/XacNhanTraPhong", data, res);
+                    })
+                    break;
+                
+                case "/QuanLyPhong/ThayDoiThongTin":
+                    req.on('data', function(data){
+                        getMethodWeb.GuiDuLieuPost("/BUS/ThayDoiThongTin", data, res);
+                    })
+                    break;
+                
+                case "/QuanLyPhong/ThemTaiKhoan":
+                    req.on('data', function(data){
+                        getMethodWeb.GuiDuLieuPost("/BUS/ThemTaiKhoan", data, res);
+                    })
+                    break;
+                default:
+                    res.writeHeader(404, {'Content-Type': 'text/plain'});
+                    res.end("Request was not support!!!");
+                    break;
+                
             }
         }
     }

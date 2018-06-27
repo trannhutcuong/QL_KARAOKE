@@ -26,34 +26,41 @@ app.createServer((req, res) => {
 
             switch(req.url){
                 case '/DAL/DanhSachPhong':
-                    console.log("Dang lay du lieu phong ...");
+                    console.log("Lấy dữ liệu phòng ...");
                     res.writeHeader(200, {'Content-Type': 'text/xml'});
                     var data = getMethod.get_DanhSach_Phong();
                     res.end(data);
-                    // if(checkAuth(req.headers) === true){
-                    //     res.writeHeader(200, {'Content-Type': 'text/xml'})
-                    //     var data =  getMethod.get_CuaHang()
-                    //     res.end(data)
-                    // }
-                    // else {
-                    //     res.writeHeader(404, {'Content-Type': 'text/plain'})
-                    //     res.end("Request was not support!!!")
-                    // }
+                    
                     break
+
                 case "/DAL/DanhSachPhongDaDat":
-                    console.log("Lay du lieu phong da dat .. ");
+                    console.log("Lấy dữ liệu phòng đã đặt ...");
                     res.writeHeader(200, {'Content-Type': 'text/xml'});
                     var data = getMethod.get_DanhSach_Phong_Da_Dat();
                     res.end(data);
                     break;
 
-                case '/DanhSach_Tivi':
+                case "/DAL/DanhSachTaiKhoan":
+                    console.log("Lấy danh sách tài khoản ...");
+                    res.writeHeader(200, {'Content-Type': 'text/xml'});
+                    var data = getMethod.get_DanhSach_TaiKhoan();
+                    res.end(data);
+                    break;
 
-                    res.writeHeader(200, {'Content-Type': 'text/xml'})
-                    var data = getMethod.get_DanhSach_Tivi()
-                    res.end(data)
-                    break
+                case "/DAL/ChonPhong":
+                    console.log("Lấy phòng theo thể loại ...");
+                    res.writeHeader(200, {'Content-Type': 'text/xml'});
+                    var data = getMethod.get_Phong_Theo_Loai(req.headers.loai_phong);
+                    res.end(data);
+                    break;
 
+                case "/DAL/ChiTietPhong":
+                    console.log("Lấy thông tin phòng " + req.headers.ma_phong);
+                    res.writeHeader(200, {'Content-Type': 'text/xml'});
+                    var data = getMethod.get_Chi_Tiet_Phong(req.headers.ma_phong);
+                    res.end(data);
+                    break;
+                
                 default:
                     res.writeHeader(404, {'Content-Type': 'text/plain'})
                     res.end("Request was not support!!!")
@@ -66,40 +73,21 @@ app.createServer((req, res) => {
             var getMethod = require('./services/getMethod.js')
 
             switch(req.url){
-                case '/login':
-                    // console.log(req.headers)
-                    // console.log(req.body)
-
-                    let body = [];
-                    req.on('data', (chunk) => {
-                        body.push(chunk)
-                    }).on('end', () => {
-                        body = Buffer.concat(body).toString()
-
-                        // body = body.split('--X-INSOMNIA-BOUNDARY')
-                        // console.log(body)
-                        // body.splice(0,0)
-                        // body.splice(body.size, 1)
-
-
-
-                        // var reg = /--X-INSOMNIA-BOUNDARY/gi
-                        // body = body.replace(reg,'|')
-                        // reg = /Content-Disposition: form-data;/gi
-                        // body = body.replace(reg,'|')
-                        // reg = /(\\r\\n\\r)/gi
-                        // body = body.replace(reg,'&')
-                        // console.log(body)
-                        // var arrString = body.split('--X-INSOMNIA-BOUNDARY\r\nContent-Disposition: form-data;')
-                        //
-                        // console.log(arrString)
-                    })
-
-                    session.push(101)
-                    console.log(session)
+                case "/DAL/CheckUID":
+                    var ChuoiNhan = query.parse(req.headers.data);
+                    var result = getMethod.GetTypeUID(ChuoiNhan.uid);
+                    console.log(result);
                     res.writeHeader(200, {'Content-Type': 'text/plain'})
-                    res.end('101')
-                    break
+                    res.end(result);
+                    break;
+
+                case "/DAL/post_login":
+                    var ChuoiNhan = query.parse(req.headers.data);
+                    var result = getMethod.CheckSession(ChuoiNhan);
+                    res.writeHeader(200, {'Content-Type': 'text/plain'})
+                    res.end(result);
+                    break;
+               
                 case '/DAL/QuanLyPhong/DatPhong':
                 {
                     var ChuoiNhan = query.parse(req.headers.data);
@@ -132,6 +120,32 @@ app.createServer((req, res) => {
                     res.end("Trả phòng thành công!");
                 }
                     break;
+                case "/DAL/ThayDoiThongTin":
+                {
+                    var ChuoiNhan = query.parse(req.headers.data);
+                    var result = getMethod.Thay_Doi_Thong_Tin_Phong(ChuoiNhan);
+                    res.writeHeader(200, {'Content-Type': 'text/plain'})
+                    if(result){
+                        res.end("Cập nhật thành công!");
+                    }
+                    else{
+                        res.end("Không thể cập nhật phòng đang được thuê!");
+                    }
+                }
+                    break;
+                    case "/DAL/ThemTaiKhoan":
+                    {
+                        var ChuoiNhan = query.parse(req.headers.data);
+                        var result = getMethod.Them_Tai_Khoan(ChuoiNhan);
+                        res.writeHeader(200, {'Content-Type': 'text/plain'})
+                        if(result){
+                            res.end("Thêm tài khoản thành công!");
+                        }
+                        else{
+                            res.end("Tên tài khoản đã có!");
+                        }
+                    }
+                        break;
                 default:
                     res.writeHeader(404, {'Content-Type': 'text/plain'})
                     res.end("Request was not support!!!")
